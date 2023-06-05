@@ -2865,7 +2865,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: b8485991a9d634c39a145bbc66a4f2dd, type: 3}
 --- !u!1001 &5116361672483382324
 PrefabInstance:
@@ -2874,7 +2875,7 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 963462553}
     m_Modifications:
-    - target: {fileID: 1004868279349077595, guid: 0ea3b1d09e92b472eb840ccf15b9808c, type: 3}
+    - target: {fileID: 0}
       propertyPath: mainMenuController
       value: 
       objectReference: {fileID: 294709464}
@@ -2995,5 +2996,5 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 1004868279349077595, guid: 0ea3b1d09e92b472eb840ccf15b9808c, type: 3}
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 0ea3b1d09e92b472eb840ccf15b9808c, type: 3}
