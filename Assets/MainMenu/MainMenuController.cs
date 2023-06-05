@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class MainMenuController : MonoBehaviour
     public Button creditsButton;
     public Button quitButton;
 
+    [SerializeField] private GameObject currentPanel;
+
     private void Start()
     {
         // Attach button click listeners
@@ -24,19 +27,19 @@ public class MainMenuController : MonoBehaviour
 
     private void OnSelectMapButtonClick()
     {
-        mainMenuPanel.SetActive(false);
+        DisableCurrentPanel();
         mapSelectPanel.SetActive(true);
     }
 
     private void OnSettingsButtonClick()
     {
-        mainMenuPanel.SetActive(false);
+        DisableCurrentPanel();
         settingsPanel.SetActive(true);
     }
 
     private void OnCreditsButtonClick()
     {
-        mainMenuPanel.SetActive(false);
+        DisableCurrentPanel();
         creditsPanel.SetActive(true);
     }
 
@@ -44,5 +47,19 @@ public class MainMenuController : MonoBehaviour
     {
         Application.Quit();
     }
-}
 
+    private void DisableCurrentPanel()
+    {
+        currentPanel.SetActive(false);
+    }
+
+    public void GoToMainMenuPanel()
+    {
+        mainMenuPanel.SetActive(true);
+    }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene("SampleScene");
+    }
+}
