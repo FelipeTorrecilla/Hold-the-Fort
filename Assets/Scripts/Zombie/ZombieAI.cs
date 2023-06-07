@@ -10,7 +10,7 @@ public class ZombieAI : MonoBehaviour
     public int attackDamage = 10; // Damage inflicted by the zombie's attack
     public float attackCooldown = 2f; // Cooldown between zombie's attacks
     public float attackDuration = 1f; // Duration of the zombie's attack animation
-    
+
     public Animator animator; // Reference to the zombie's Animator component
 
     [SerializeField] private int currentHealth; // Current health of the zombie
@@ -20,6 +20,9 @@ public class ZombieAI : MonoBehaviour
     private bool isAttacking; // Flag indicating if the zombie is currently attacking
     private float attackEndTime; // Time when the attack animation should end
     private Quaternion originalRotation; // Original rotation of the zombie before the attack
+    
+    private ZombieRoundManager roundManager; // Reference to the ZombieRoundManager component
+
 
 
     private void Awake()
@@ -28,6 +31,8 @@ public class ZombieAI : MonoBehaviour
         currentHealth = maxHealth;
         zombieTransform = transform;
         originalRotation = zombieTransform.rotation;
+        
+        roundManager = FindObjectOfType<ZombieRoundManager>(); // Find the ZombieRoundManager component in the scene
     }
 
     private void Update()
@@ -123,6 +128,9 @@ public class ZombieAI : MonoBehaviour
 
     private void Die()
     {
+        // Call the ZombieKilled() function from the ZombieRoundManager
+        roundManager.ZombieKilled();
+
         // Handle death logic here (e.g., play death animation, destroy the zombie GameObject, etc.)
         Destroy(gameObject);
     }
