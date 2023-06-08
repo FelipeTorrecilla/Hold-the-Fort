@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ZombieRoundManager : MonoBehaviour
 {
@@ -15,12 +17,15 @@ public class ZombieRoundManager : MonoBehaviour
     public int zombiesToSpawn = 10;
 
     private int zombiesSpawned = 0;
+    
+    public Text roundText;
+
 
     private void Start()
     {
         currentRound = startingRound;
         zombiesKilled = 0;
-        SpawnZombies(zombiesToSpawn);
+        roundText.text = "Round: " + currentRound;
 
         StartRound();
     }
@@ -28,7 +33,7 @@ public class ZombieRoundManager : MonoBehaviour
     private void Update()
     {
         // Check if the required number of zombies have been killed
-        if (zombiesKilled >= (currentRound) * zombiesPerRound)
+        if (zombiesKilled >= zombiesPerRound)
         {
             EndRound();
             StartNextRound();
@@ -38,10 +43,12 @@ public class ZombieRoundManager : MonoBehaviour
     private void StartRound()
     {
         Debug.Log("Starting Round " + currentRound);
-        int zombiesToSpawn = currentRound * zombiesPerRound;
+        roundText.text = "Round: " + currentRound;
+        int zombiesToSpawn = zombiesPerRound;
         zombiesSpawned = 0; // Reset the counter for spawned zombies
-        SpawnZombies(zombiesToSpawn);
+        StartCoroutine(SpawnZombies(zombiesToSpawn));
     }
+
 
     private void EndRound()
     {
@@ -57,10 +64,8 @@ public class ZombieRoundManager : MonoBehaviour
         StartRound();
     }
 
-    private void SpawnZombies(int amount)
+    private IEnumerator SpawnZombies(int amount)
     {
-        int zombiesRemaining = amount - zombiesSpawned;
-
         while (zombiesSpawned < amount)
         {
             // Get a random spawn point
@@ -71,6 +76,9 @@ public class ZombieRoundManager : MonoBehaviour
                 // Spawn a zombie at the spawn point
                 Instantiate(zombiePrefab, spawnPoint.transform.position, Quaternion.identity);
                 zombiesSpawned++;
+
+                // Add a delay before spawning the next zombie
+                yield return new WaitForSeconds(0.5f); // Adjust the delay duration as desired
             }
             else
             {
@@ -79,6 +87,7 @@ public class ZombieRoundManager : MonoBehaviour
             }
         }
     }
+
 
     private GameObject GetRandomSpawnPoint()
     {

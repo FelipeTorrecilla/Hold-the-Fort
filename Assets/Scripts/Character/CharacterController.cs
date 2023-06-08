@@ -1,26 +1,28 @@
-using System.Collections;
 using System.Collections.Generic;
-using Code.Weapons;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
+
 
 public class CharacterController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public float fadeSpeed = 5f;
 
-    //public Transform reticle; // Reference to the aiming reticle object
-    //public float maxReticleSize = 5f; // Maximum size of the reticle when it's farthest away
-    
     public List<GameObject> weapons; // List of weapon prefabs
     public int currentWeaponIndex = 0; // Index of the currently selected weapon
 
     private Rigidbody2D rb;
     private Vector2 movement;
     private bool isMoving = false;
+    private Transform playerTransform;
+    
+    public float interactDistance = 2f;
+    private Interactable interactable;
+    
+    public bool _weaponReloading = false;
+    
   private void Awake()
-    {
+  {
+        playerTransform = transform;
         rb = GetComponent<Rigidbody2D>();
         // Disable all weapons except the currently selected one
         for (int i = 0; i < weapons.Count; i++)
@@ -34,6 +36,10 @@ public class CharacterController : MonoBehaviour
     {
         Movement();
         WeaponSelection();
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Interact();
+        }
     }
 
     private void Movement()
@@ -72,20 +78,28 @@ public class CharacterController : MonoBehaviour
 
         rb.velocity = Vector2.zero;
     }
+    
+    public void SetWeaponReloading(bool reloading)
+    {
+        _weaponReloading = reloading;
+    }
 
     private void WeaponSelection()
     {
-        // Weapon Selection
-        if (Input.mouseScrollDelta.y > 0f)
-            SelectNextWeapon();
-
-        else if (Input.mouseScrollDelta.y < 0f)
-            SelectPreviousWeapon();
-
-        for (int i = 0; i < weapons.Count; i++)
+        if (!_weaponReloading)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
-                SelectWeapon(i);
+            // Weapon Selection
+            if (Input.mouseScrollDelta.y > 0f)
+                SelectNextWeapon();
+
+            else if (Input.mouseScrollDelta.y < 0f)
+                SelectPreviousWeapon();
+
+            for (int i = 0; i < weapons.Count; i++)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+                    SelectWeapon(i);
+            }
         }
     }
     
@@ -111,6 +125,21 @@ public class CharacterController : MonoBehaviour
         if (previousIndex < 0)
             previousIndex = weapons.Count - 1;
         SelectWeapon(previousIndex);
+    }
+    
+    private void Interact()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(playerTransform.position, interactDistance);
+
+        foreach (Collider2D collider in colliders)
+        {
+            Interactable interactable = collider.GetComponent<Interactable>();
+
+            if (interactable != null)
+            {
+                interactable.Interact();
+            }
+        }
     }
 }
 

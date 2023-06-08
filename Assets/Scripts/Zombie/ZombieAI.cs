@@ -1,9 +1,8 @@
 using UnityEngine;
 
-
 public class ZombieAI : MonoBehaviour
 {
-    public Transform player; // Reference to the player's transform
+    public Transform target; // Reference to the target prefab's transform
     public float speed = 2f; // Zombie's movement speed
     public int maxHealth = 100; // Maximum health of the zombie
     public float attackRange = 1.5f; // Range of the zombie's attack
@@ -23,7 +22,9 @@ public class ZombieAI : MonoBehaviour
     
     private ZombieRoundManager roundManager; // Reference to the ZombieRoundManager component
 
-
+    [Header("Currency")]
+    public int currencyOnKill = 10; // Amount of currency to award per zombie kill
+    private CurrencyManager currencyManager;
 
     private void Awake()
     {
@@ -32,29 +33,41 @@ public class ZombieAI : MonoBehaviour
         zombieTransform = transform;
         originalRotation = zombieTransform.rotation;
         
+        currencyManager = FindObjectOfType<CurrencyManager>();
+        
         roundManager = FindObjectOfType<ZombieRoundManager>(); // Find the ZombieRoundManager component in the scene
+        
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null)
+        {
+            target = playerObject.transform;
+        }
+        else
+        {
+            Debug.LogWarning("ZombieAI: No player object found with tag 'Player'. Make sure to assign the player object or tag it correctly.");
+        }
     }
 
     private void Update()
     {
-        if (player != null)
+        if (target != null)
         {
-            // Calculate the direction to the player
-            Vector2 direction = player.position - zombieTransform.position;
+            // Calculate the direction to the target
+            Vector2 direction = target.position - zombieTransform.position;
             direction.Normalize();
 
             // Check if the zombie can attack
-            if (!isAttacking && Time.time >= nextAttackTime && Vector2.Distance(zombieTransform.position, player.position) <= attackRange)
+            if (!isAttacking && Time.time >= nextAttackTime && Vector2.Distance(zombieTransform.position, target.position) <= attackRange)
             {
                 Attack();
             }
 
-            // Move the zombie towards the player if not attacking
+            // Move the zombie towards the target if not attacking
             if (!isAttacking)
             {
                 rb.velocity = direction * speed;
 
-                // Rotate the zombie to face the player
+                // Rotate the zombie to face the target
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                 zombieTransform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }
@@ -100,9 +113,9 @@ public class ZombieAI : MonoBehaviour
         rb.isKinematic = true; // Freeze the zombie's position
     }
 
-    public void SetPlayer(Transform newPlayer)
+    public void SetTarget(Transform newTarget)
     {
-        player = newPlayer;
+        target = newTarget;
     }
 
     public void TakeDamage(int damageAmount)
@@ -130,6 +143,7 @@ public class ZombieAI : MonoBehaviour
     {
         // Call the ZombieKilled() function from the ZombieRoundManager
         roundManager.ZombieKilled();
+        currencyManager.AddCurrency(currencyOnKill);
 
         // Handle death logic here (e.g., play death animation, destroy the zombie GameObject, etc.)
         Destroy(gameObject);

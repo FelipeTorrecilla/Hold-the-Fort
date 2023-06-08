@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fa6ebc1e4f2a8f419954b2eaba27d36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  target: {fileID: 3718080657458664233, guid: 01994626eb2662646bf4c3fce09e4889, type: 3}
   speed: 2
   maxHealth: 100
   attackRange: 1.5

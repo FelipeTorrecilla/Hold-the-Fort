@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Code.Weapons;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Code.Weapons
 {
-    public class Pistol : MonoBehaviour
+    public class WeaponController : MonoBehaviour
     {
         [SerializeField] private GameObject _bulletPrefab;
         [SerializeField] private Transform _spawnReference;
@@ -26,12 +27,19 @@ namespace Code.Weapons
 
         public Transform reticle; // Reference to the aiming reticle object
         public float maxReticleSize = 5f; // Maximum size of the reticle when it's farthest away
+        
+        private CharacterController _characterController;
 
         private void Awake()
         {
             _currentAmmo = _maxAmmo;
             _currentAmmoInMagazine = _maxAmmoInMagazine;
             CurrentCooldown = FireCooldown;
+            _characterController = FindObjectOfType<CharacterController>();
+            if (_characterController == null)
+            {
+                Debug.LogError("CharacterController component not found in the scene.");
+            }
         }
         private void OnEnable()
         {
@@ -52,7 +60,10 @@ namespace Code.Weapons
             float reticleScale = Mathf.Clamp(distance, 0f, maxReticleSize) / maxReticleSize;
             reticle.localScale = Vector3.one * reticleScale;
             
-            Reload();
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Reload();
+            }
         }
 
         public void Attack()
@@ -107,18 +118,17 @@ namespace Code.Weapons
 
         public void Reload()
         {
-            if (Input.GetKeyDown(KeyCode.R))
+            if (!_reloading && _currentAmmoInMagazine < _maxAmmoInMagazine && _currentAmmo > 0)
             {
-                if (!_reloading && _currentAmmoInMagazine < _maxAmmoInMagazine && _currentAmmo > 0)
-                {
-                    StartCoroutine(ReloadCoroutine());
-                }   
-            }
+                StartCoroutine(ReloadCoroutine());
+            }   
+            
         }
 
         private IEnumerator ReloadCoroutine()
         {
             _reloading = true;
+            _characterController.SetWeaponReloading(true);
 
             int ammoNeeded = _maxAmmoInMagazine - _currentAmmoInMagazine;
             int ammoAvailable = Mathf.Min(ammoNeeded, _currentAmmo);
@@ -128,6 +138,15 @@ namespace Code.Weapons
             UpdateAmmoText();
 
             _reloading = false;
+            _characterController.SetWeaponReloading(false);
+            
+        }
+        
+        public void RefillAmmo()
+        {
+            int ammoToAdd = _maxAmmo - _currentAmmo;
+            _currentAmmo += ammoToAdd;
+            UpdateAmmoText();
         }
     }
 }
