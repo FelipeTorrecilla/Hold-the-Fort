@@ -6,6 +6,8 @@ public class CharacterController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public float fadeSpeed = 5f;
+    public float dashDistance = 5f;
+    public float dashCooldown = 2f;
 
     public List<GameObject> weapons; // List of weapon prefabs
     public int currentWeaponIndex = 0; // Index of the currently selected weapon
@@ -14,11 +16,17 @@ public class CharacterController : MonoBehaviour
     private Vector2 movement;
     private bool isMoving = false;
     private Transform playerTransform;
+    private bool isDashing = false;
+    private bool isDashCooldown = false;
+    public ParticleSystem dashParticles; // Reference to the Particle System GameObject
+
     
     public float interactDistance = 2f;
     private Interactable interactable;
     
     public bool _weaponReloading = false;
+    
+    public CameraBehaviour cameraBehaviour;
     
   private void Awake()
   {
@@ -30,7 +38,10 @@ public class CharacterController : MonoBehaviour
             if (i != currentWeaponIndex)
                 weapons[i].SetActive(false);
         }
-    }
+        cameraBehaviour = Camera.main.GetComponent<CameraBehaviour>();
+        dashParticles.Stop(); // Ensure the particle system is initially stopped
+       
+  }
     
     private void Update()
     {
@@ -39,6 +50,11 @@ public class CharacterController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             Interact();
+        }
+        
+        if (!isDashing && !isDashCooldown && Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(Dash());
         }
     }
 
@@ -50,7 +66,11 @@ public class CharacterController : MonoBehaviour
         movement = new Vector2(moveX, moveY);
         movement.Normalize();
 
-        if (movement.magnitude > 0)
+        if (isDashing)
+        {
+            rb.velocity = movement * moveSpeed * 2f;
+        }
+        else if (movement.magnitude > 0)
         {
             isMoving = true;
             rb.velocity = movement * moveSpeed;
@@ -61,11 +81,31 @@ public class CharacterController : MonoBehaviour
             StartCoroutine(FadeVelocity());
         }
         
+        
+
         // Character Aiming
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 aimDirection = mousePosition - transform.position;
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    }
+    
+    private System.Collections.IEnumerator Dash()
+    {
+        cameraBehaviour.ShakeCamera(0.2f, 5f);
+        isDashing = true;
+        dashParticles.Play();
+
+        Vector2 dashDirection = movement.normalized;
+        Vector2 dashTarget = rb.position + dashDirection * dashDistance;
+
+        rb.position = dashTarget;
+        isDashing = false;
+        isDashCooldown = true;
+
+        yield return new WaitForSeconds(dashCooldown);
+
+        isDashCooldown = false;
     }
 
     private System.Collections.IEnumerator FadeVelocity()
