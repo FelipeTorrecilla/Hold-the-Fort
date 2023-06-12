@@ -100,10 +100,10 @@ public class ZombieRoundManager : MonoBehaviour
             spawnPoints[randomIndex] = temp;
         }
 
-        // Find the first available spawn point
+        // Find the first available and active spawn point
         foreach (GameObject spawnPoint in spawnPoints)
         {
-            if (spawnPoint != null)
+            if (spawnPoint != null && spawnPoint.activeSelf)
             {
                 return spawnPoint;
             }
