@@ -125,8 +125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d882a41c998b446956ac7eaaa41fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 25
-  damageAmount: 25
+  _speed: 35
+  damageAmount: 30
   destroyDelay: 2
   obstacleTag: Obstacle
 --- !u!50 &-1594799121393519676

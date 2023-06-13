@@ -20,10 +20,6 @@ public class CharacterController : MonoBehaviour
     private bool isDashCooldown = false;
     public ParticleSystem dashParticles; // Reference to the Particle System GameObject
 
-    
-    public float interactDistance = 2f;
-    private Interactable interactable;
-    
     public bool _weaponReloading = false;
     
     public CameraBehaviour cameraBehaviour;
@@ -47,11 +43,7 @@ public class CharacterController : MonoBehaviour
     {
         Movement();
         WeaponSelection();
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Interact();
-        }
-        
+
         if (!isDashing && !isDashCooldown && Input.GetKeyDown(KeyCode.Space))
         {
             StartCoroutine(Dash());
@@ -81,8 +73,6 @@ public class CharacterController : MonoBehaviour
             StartCoroutine(FadeVelocity());
         }
         
-        
-
         // Character Aiming
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 aimDirection = mousePosition - transform.position;
@@ -165,21 +155,6 @@ public class CharacterController : MonoBehaviour
         if (previousIndex < 0)
             previousIndex = weapons.Count - 1;
         SelectWeapon(previousIndex);
-    }
-    
-    private void Interact()
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(playerTransform.position, interactDistance);
-
-        foreach (Collider2D collider in colliders)
-        {
-            Interactable interactable = collider.GetComponent<Interactable>();
-
-            if (interactable != null)
-            {
-                interactable.Interact();
-            }
-        }
     }
 }
 

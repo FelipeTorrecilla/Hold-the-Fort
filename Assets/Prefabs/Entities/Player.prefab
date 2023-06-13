@@ -365,9 +365,9 @@ MonoBehaviour:
   _spawnReference: {fileID: 858556098066248706}
   _maxAmmo: 18
   _maxAmmoInMagazine: 6
-  _reloadTime: 2
+  _reloadTime: 3
   _ammoText: {fileID: 0}
-  FireCooldown: 1
+  FireCooldown: 1.5
   Automatic: 0
   reticle: {fileID: 858556096387571369}
   maxReticleSize: 18
@@ -472,11 +472,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletPrefab: {fileID: 3159213635975321240, guid: 996217936480c424da5bddfb7586a373, type: 3}
   _spawnReference: {fileID: 858556097425903225}
-  _maxAmmo: 60
+  _maxAmmo: 90
   _maxAmmoInMagazine: 30
   _reloadTime: 2
   _ammoText: {fileID: 0}
-  FireCooldown: 0.1
+  FireCooldown: 0.075
   Automatic: 1
   reticle: {fileID: 858556097972936662}
   maxReticleSize: 25
@@ -494,6 +494,7 @@ GameObject:
   - component: {fileID: 3320260121813098894}
   - component: {fileID: 3320260121813098889}
   - component: {fileID: 190991950269060293}
+  - component: {fileID: 8386623877939196127}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -582,7 +583,6 @@ MonoBehaviour:
   - {fileID: 858556097151716785}
   currentWeaponIndex: 0
   dashParticles: {fileID: 2019838140385963623}
-  interactDistance: 2
   _weaponReloading: 0
   cameraBehaviour: {fileID: 0}
 --- !u!114 &3320260121813098889
@@ -651,6 +651,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8386623877939196127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858556097351151325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4ac74e4a9d8fb43bb3212b02c1bb61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRange: 2
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &858556097384388480
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,11 +768,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletPrefab: {fileID: 3159213635975321240, guid: 81b973283fe66654c9da12ead3305289, type: 3}
   _spawnReference: {fileID: 858556097470720488}
-  _maxAmmo: 36
+  _maxAmmo: 48
   _maxAmmoInMagazine: 6
   _reloadTime: 1.5
   _ammoText: {fileID: 0}
-  FireCooldown: 0.3
+  FireCooldown: 0.2
   Automatic: 0
   reticle: {fileID: 858556096458974971}
   maxReticleSize: 20
