@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 5053780872652090962}
   - component: {fileID: 5053780872652090969}
   - component: {fileID: 5053780872652090968}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Zombie
-  m_TagString: Untagged
+  m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8924e279ba446fa469ca892cc9f3800f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a75b656a1ff24fb45920812a1fd2f863, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -126,8 +126,8 @@ MonoBehaviour:
   maxHealth: 100
   attackRange: 1.5
   attackDamage: 10
-  attackCooldown: 2
-  attackDuration: 1
+  attackCooldown: 1.5
+  attackDuration: 0.5
   animator: {fileID: 5053780872652090968}
   currentHealth: 0
   currencyOnKill: 10
