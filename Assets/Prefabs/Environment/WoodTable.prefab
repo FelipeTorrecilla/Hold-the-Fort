@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5645090832865329555}
   - component: {fileID: 5645090832865329552}
   - component: {fileID: 5645090832865329553}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: WoodTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 5645090833901810980}
   - component: {fileID: 5645090833901810981}
   - component: {fileID: 5645090833901810978}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

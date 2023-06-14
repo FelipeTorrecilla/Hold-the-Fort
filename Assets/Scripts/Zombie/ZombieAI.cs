@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ZombieAI : MonoBehaviour
 {
-    public Transform target; // Reference to the target prefab's transform
-    public float speed = 2f; // Zombie's movement speed
+    [SerializeField] private Transform target; // Reference to the target prefab's transform
+
+    private NavMeshAgent _navMeshAgent;
+    
     public int maxHealth = 100; // Maximum health of the zombie
     public float attackRange = 1.5f; // Range of the zombie's attack
     public int attackDamage = 10; // Damage inflicted by the zombie's attack
@@ -34,8 +37,11 @@ public class ZombieAI : MonoBehaviour
         originalRotation = zombieTransform.rotation;
         
         currencyManager = FindObjectOfType<CurrencyManager>();
-        
-        roundManager = FindObjectOfType<ZombieRoundManager>(); // Find the ZombieRoundManager component in the scene
+        roundManager = FindObjectOfType<ZombieRoundManager>();
+
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        _navMeshAgent.updateUpAxis = false;
+        _navMeshAgent.updateRotation = false;
         
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
@@ -65,7 +71,7 @@ public class ZombieAI : MonoBehaviour
             // Move the zombie towards the target if not attacking
             if (!isAttacking)
             {
-                rb.velocity = direction * speed;
+                _navMeshAgent.SetDestination(target.position);
 
                 // Rotate the zombie to face the target
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -76,8 +82,8 @@ public class ZombieAI : MonoBehaviour
             if (isAttacking && Time.time >= attackEndTime)
             {
                 isAttacking = false;
-                rb.velocity = Vector2.zero; // Stop the zombie's movement after the attack
-                rb.isKinematic = false; // Allow the zombie to be affected by physics again
+                rb.velocity = Vector2.zero;
+                rb.isKinematic = false;
             }
         }
     }
