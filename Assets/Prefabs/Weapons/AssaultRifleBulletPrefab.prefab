@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 35
-  damageAmount: 14
+  damageAmount: 18
   destroyDelay: 2
   obstacleTag: Obstacle
 --- !u!50 &-1594799121393519676

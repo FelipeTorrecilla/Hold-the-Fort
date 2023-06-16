@@ -476,7 +476,7 @@ MonoBehaviour:
   _maxAmmoInMagazine: 30
   _reloadTime: 2
   _ammoText: {fileID: 0}
-  FireCooldown: 0.075
+  FireCooldown: 0.15
   Automatic: 1
   reticle: {fileID: 858556097972936662}
   maxReticleSize: 25
@@ -597,6 +597,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d283876a28a31f34fb23644a0a978c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
   maxHealth: 100
   currentHealth: 0
 --- !u!212 &190991950269060293
