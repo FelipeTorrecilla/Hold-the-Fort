@@ -6,6 +6,7 @@ public class CharacterHealth : MonoBehaviour
     [SerializeField] private Image healthBar;
     [SerializeField] private int maxHealth = 100; // Maximum health of the character
     [SerializeField] private int currentHealth; // Current health of the character
+    [SerializeField] private PauseGame pauseGame;
 
     private void Awake()
     {
@@ -28,16 +29,10 @@ public class CharacterHealth : MonoBehaviour
         currentHealth += healAmount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         healthBar.fillAmount = currentHealth / 100f;
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
     }
 
     private void Die()
     {
-        // Handle death logic here (e.g., play death animation, end the game, etc.)
-        Destroy(gameObject);
+        pauseGame.Death();
     }
 }

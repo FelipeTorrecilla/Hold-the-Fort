@@ -44,10 +44,10 @@ public class CharacterController : MonoBehaviour
         Movement();
         WeaponSelection();
 
-        if (!isDashing && !isDashCooldown && Input.GetKeyDown(KeyCode.Space))
-        {
-            StartCoroutine(Dash());
-        }
+        //if (!isDashing && !isDashCooldown && Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    StartCoroutine(Dash());
+        //}
     }
 
     private void Movement()

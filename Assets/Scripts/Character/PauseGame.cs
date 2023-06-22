@@ -7,6 +7,8 @@ public class PauseGame : MonoBehaviour
     public CharacterController characterController;
     private bool isPaused = false;
 
+    public GameObject deathPanel;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -65,6 +67,15 @@ public class PauseGame : MonoBehaviour
     {
         ResumeGame();
         Application.Quit();
+    }
+
+    public void Death()
+    {
+        isPaused = true;
+        Time.timeScale = 0f;
+        deathPanel.SetActive(true);
+        characterController.enabled = false;
+        DisableScriptsOnChildrenObjects(characterController.gameObject, false);
     }
 }
 
