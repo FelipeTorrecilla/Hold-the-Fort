@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Obstacle
+  - Zombie
   layers:
   - Default
   - TransparentFX
@@ -13,10 +14,10 @@ TagManager:
   - Water
   - UI
   - Floor
-  - 
-  - 
-  - 
-  - 
+  - Zombie
+  - Player
+  - Window
+  - Interactable
   - 
   - 
   - 
@@ -41,4 +42,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 803685161
+    locked: 0
+  - name: Floor
+    uniqueID: 181350873
     locked: 0
