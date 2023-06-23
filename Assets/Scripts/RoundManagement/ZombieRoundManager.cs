@@ -19,6 +19,9 @@ public class ZombieRoundManager : MonoBehaviour
     private int zombiesSpawned = 0;
     
     public Text roundText;
+    
+    [SerializeField] private AudioClip[] _deathSounds; // Sound effect for Zombie death
+    private AudioSource _audioSource; // Reference to the Audio Source component
 
 
     private void Start()
@@ -27,6 +30,8 @@ public class ZombieRoundManager : MonoBehaviour
         zombiesKilled = 0;
         roundText.text = "Round: " + currentRound;
 
+        _audioSource = GetComponent<AudioSource>();
+        
         StartRound();
     }
 
@@ -116,6 +121,8 @@ public class ZombieRoundManager : MonoBehaviour
     public void ZombieKilled()
     {
         zombiesKilled++;
+        AudioClip randomDeathSound = _deathSounds[Random.Range(0, _deathSounds.Length)]; 
+        _audioSource.PlayOneShot(randomDeathSound);
     }
 }
 

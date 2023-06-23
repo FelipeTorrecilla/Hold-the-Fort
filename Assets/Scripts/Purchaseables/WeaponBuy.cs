@@ -10,8 +10,12 @@ public class WeaponBuy : MonoBehaviour, IInteractable
 
    private CurrencyManager currencyManager;
    
+   [SerializeField] private AudioClip _purchaseSound;
+   private AudioSource _audioSource;
+   
    private void Start()
    {
+      _audioSource = GetComponent<AudioSource>();
       currencyManager = FindObjectOfType<CurrencyManager>();
    }
    public void Interact()
@@ -20,6 +24,7 @@ public class WeaponBuy : MonoBehaviour, IInteractable
       if (currencyManager.CurrentCurrency >= refillCost)
       {
          RefillAmmo();
+         _audioSource.PlayOneShot(_purchaseSound);
       }
       else
       {

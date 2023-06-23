@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class Interactor : MonoBehaviour
 {
     public float interactionRange = 2f;
     public LayerMask interactableLayer;
-
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))

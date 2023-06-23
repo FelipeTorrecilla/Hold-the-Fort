@@ -10,9 +10,13 @@ public class MedpackBuy : MonoBehaviour, IInteractable
 
    private CurrencyManager currencyManager;
    
+   [SerializeField] private AudioClip _purchaseSound;
+   private AudioSource _audioSource;
+   
    private void Start()
    {
       currencyManager = FindObjectOfType<CurrencyManager>();
+      _audioSource = GetComponent<AudioSource>();
    }
    public void Interact()
    {
@@ -20,6 +24,7 @@ public class MedpackBuy : MonoBehaviour, IInteractable
       if (currencyManager.CurrentCurrency >= healCost)
       {
          Heal();
+         _audioSource.PlayOneShot(_purchaseSound);
       }
       else
       {

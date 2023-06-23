@@ -1,3 +1,5 @@
+using System.Collections;
+using Code.Weapons;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -28,6 +30,9 @@ public class ZombieAI : MonoBehaviour
     [Header("Currency")]
     public int currencyOnKill = 10; // Amount of currency to award per zombie kill
     private CurrencyManager currencyManager;
+    
+    [SerializeField] private AudioClip[] _attackSounds; // Array of sound effects for attacking
+    private AudioSource _audioSource; // Reference to the Audio Source component
 
     private void Awake()
     {
@@ -42,6 +47,8 @@ public class ZombieAI : MonoBehaviour
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.updateUpAxis = false;
         _navMeshAgent.updateRotation = false;
+        
+        _audioSource = GetComponent<AudioSource>();
         
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null)
@@ -104,6 +111,9 @@ public class ZombieAI : MonoBehaviour
 
         // Detect colliders within the attack area
         Collider2D[] colliders = Physics2D.OverlapCircleAll(zombieTransform.position, attackRange);
+        
+        AudioClip randomAttackSound = _attackSounds[Random.Range(0, _attackSounds.Length)];
+        _audioSource.PlayOneShot(randomAttackSound);
 
         foreach (Collider2D collider in colliders)
         {
@@ -133,7 +143,7 @@ public class ZombieAI : MonoBehaviour
             Die();
         }
     }
-    
+
     private void LateUpdate()
     {
         // Restore the original rotation after the attack is finished
@@ -144,14 +154,13 @@ public class ZombieAI : MonoBehaviour
             zombieTransform.rotation = originalRotation;
         }
     }
-
+    
     private void Die()
     {
         // Call the ZombieKilled() function from the ZombieRoundManager
         roundManager.ZombieKilled();
         currencyManager.AddCurrency(currencyOnKill);
-
-        // Handle death logic here (e.g., play death animation, destroy the zombie GameObject, etc.)
+        
         Destroy(gameObject);
     }
 }

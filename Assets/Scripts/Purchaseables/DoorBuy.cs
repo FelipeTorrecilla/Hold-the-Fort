@@ -9,10 +9,17 @@ public class DoorBuy : MonoBehaviour, IInteractable
     private bool doorOpened = false;
     
     [SerializeField] private GameObject[] spawnPointsToActivate;
+
+    [SerializeField] private AudioClip _purchaseSound;
+    private AudioSource _audioSource;
+    private BoxCollider2D doorCollider;
+
     
     private void Start()
     {
         currencyManager = FindObjectOfType<CurrencyManager>();
+        _audioSource = GetComponent<AudioSource>();
+        doorCollider = GetComponent<BoxCollider2D>();
     }
     
     public void Interact()
@@ -26,6 +33,7 @@ public class DoorBuy : MonoBehaviour, IInteractable
                 currencyManager.RemoveCurrency(openCost);
                 
                 OpenDoor();
+                _audioSource.PlayOneShot(_purchaseSound);
                 ActivateSpawnPoints();
             }
             else
@@ -39,7 +47,11 @@ public class DoorBuy : MonoBehaviour, IInteractable
     {
         // Play animation, particles, or any other visual effects for opening the door
         
-        gameObject.SetActive(false);
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+        doorCollider.enabled = false;
         doorOpened = true;
     }
     

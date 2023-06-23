@@ -29,6 +29,10 @@ namespace Code.Weapons
         public float maxReticleSize = 5f; // Maximum size of the reticle when it's farthest away
         
         private CharacterController _characterController;
+        
+        [SerializeField] private AudioClip _shootingSound; // Sound effect for shooting
+        [SerializeField] private AudioClip _reloadingSound; // Sound effect for reloading
+        private AudioSource _audioSource; // Reference to the Audio Source component
 
         private void Awake()
         {
@@ -40,6 +44,8 @@ namespace Code.Weapons
             {
                 Debug.LogError("CharacterController component not found in the scene.");
             }
+            
+            _audioSource = GetComponent<AudioSource>();
         }
         private void OnEnable()
         {
@@ -81,6 +87,11 @@ namespace Code.Weapons
                         CurrentCooldown = FireCooldown;
                         _currentAmmoInMagazine--;
                         UpdateAmmoText();
+                        
+                         if (_shootingSound != null && _audioSource != null)
+                         {
+                            _audioSource.PlayOneShot(_shootingSound);
+                         }
                     }
                     if (_currentAmmoInMagazine <= 0 && _currentAmmo > 0)
                     {
@@ -98,6 +109,11 @@ namespace Code.Weapons
                         CurrentCooldown = FireCooldown;
                         _currentAmmoInMagazine--;
                         UpdateAmmoText();
+                        
+                        if (_shootingSound != null && _audioSource != null)
+                        {
+                            _audioSource.PlayOneShot(_shootingSound);
+                        }
                     }
 
                     if (_currentAmmoInMagazine <= 0 && _currentAmmo > 0)
@@ -118,6 +134,11 @@ namespace Code.Weapons
 
         public void Reload()
         {
+            if (_reloadingSound != null && _audioSource != null)
+            {
+                _audioSource.PlayOneShot(_reloadingSound);
+            }
+            
             if (!_reloading && _currentAmmoInMagazine < _maxAmmoInMagazine && _currentAmmo > 0)
             {
                 StartCoroutine(ReloadCoroutine());
